@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-
+      Je suis le mur
   </div>
 </template>
 

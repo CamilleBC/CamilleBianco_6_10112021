@@ -1,12 +1,16 @@
 <template>
   <div id="app">
-    <div class="bg-warning" id="nav">
-      <router-link to="/">Home</router-link> |
-    </div>
-    <router-view/>
+    <Nav/>
+   <router-view/>
   </div>
 </template>
 
-<style lang="scss">
+<script>
+import Nav from './components/Nav.vue'
 
-</style>
+export default {
+  components : {
+    Nav,
+  }
+}
+</script>
