@@ -17,19 +17,19 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <div class="form-outline flex-fill mb-0">
                         <label class="form-label" for="email">Email</label>
-                        <input type="email" id="email" class="form-control" />
+                        <input type="email" v-model="email" id="email" class="form-control" />
                     </div>
                   </div>
 
                   <div class="d-flex flex-row align-items-center mb-4">
                     <div class="form-outline flex-fill mb-0">
                       <label class="form-label" for="Mot de passe">Mot de passe</label>
-                      <input type="password" id="Mot de Passe" class="form-control" />
+                      <input type="password" v-model="password" id="Mot de Passe" class="form-control" />
                     </div>
                   </div>
 
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="button" class="btn btn-primary btn-lg">Connecter</button>
+                    <button type="button" @click="login()" class="btn btn-primary btn-lg">Connecter</button>
                   </div>
                 </form>
 
@@ -39,11 +39,37 @@
       </div>
   </div>
 </section>
-
 </template>
 
-<style scoped lang='scss'>
+<script>
+export default {
+  name : 'Login',
+  data (){
+    return{
+      email : "",
+      password : ""
+    }
+  },
+  methods : {
+    login : function (){
+      const data = {email : this.email, password : this.password}
+      this.$http.post('http://localhost:3000/api/user/login', data)
+        .then(function(res){
+            if(res.status === 200) {
+              window.location.href = 'http://localhost:8080/wall'
+            }
+            console.log(res),
+          function(error){
+            console.log(error)
+          }
+        })
+    }
+      
+  }
+}
+</script>
 
+<style scoped lang='scss'>
 section {
   background-color:  #eee;
  }

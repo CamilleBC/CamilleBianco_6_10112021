@@ -40,7 +40,7 @@ export default {
   name : 'Nav',
   data() {
       return {
-          isConnected : true,
+          isConnected : false,
           user : 'Marie Robert',
           image : {
               source : '/images/icon.png',

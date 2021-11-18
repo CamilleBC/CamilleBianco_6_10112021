@@ -13,6 +13,10 @@ import '@fortawesome/fontawesome-free/js/all.js'
 
 Vue.use(BootstrapVue)
 
+//Importer vue-ressource
+import VueResource from 'vue-resource'
+Vue.use(VueResource);
+
 Vue.config.productionTip = false
 
 new Vue({
