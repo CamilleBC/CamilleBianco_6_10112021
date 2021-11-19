@@ -71,7 +71,7 @@ export default {
           //Si envoi réussi
           .then(function(res){
             if(res.status === 200){
-            window.location.href = 'http://localhost:8080/wall'
+            window.location.href = 'http://localhost:8080/login'
             }
             console.log(res.body)
           },

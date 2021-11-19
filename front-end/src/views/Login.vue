@@ -56,6 +56,8 @@ export default {
       this.$http.post('http://localhost:3000/api/user/login', data)
         .then(function(res){
             if(res.status === 200) {
+              localStorage.setItem('token', res.body.token);
+              localStorage.setItem('userId', res.body.userId)
               window.location.href = 'http://localhost:8080/wall'
             }
             console.log(res),

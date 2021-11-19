@@ -4,6 +4,8 @@ const models = require('../models');
 const bcrypt = require('bcrypt');
 //Importer le package de créateur et vérificateur de token jsonwebtoken
 const jwt = require('jsonwebtoken');
+//Importer les fonctions de jwt
+const jwtUtils = require('../utils/jwtUtils');
 
 //Créer et exporter la fonction signup
 exports.signup = (req, res, next)=>{
@@ -49,12 +51,8 @@ exports.login = (req, res, next)=>{
                     }
                     //Si le mdp est valide
                     res.status(200).json({
-                        userId : user._id,
-                        token : jwt.sign(
-                            {userId : user._id},
-                            'RANDOM_SECRET_TOKEN',
-                            {expiresIn : '24h'}
-                        )
+                        userId : user.id,
+                        token : jwtUtils.generateToken(user)
                     })
                 })
                 .catch(function(error){
@@ -64,4 +62,21 @@ exports.login = (req, res, next)=>{
         .catch(function(error){
             res.status(500).json({error})
         })
-}
+};
+
+exports.getOneUser = (req, res, next)=>{
+    //Chercher le token dans le header
+    const token = req.headers.authorization.split(' ')[1]
+    //Décoder le token
+    const decodedToken = jwtUtils.decodedToken(token);
+    //Récupérer le userId du token
+    const userId = decodedToken.userId;
+    //Trouver le User avec l'Id
+    models.User.findOne( {attributes:['id', 'name', 'email'], where : {id : userId }})
+        .then(function(user){
+            res.status(200).json({user})
+        })
+        .catch (function(error){
+            res.status(400).json({error})
+        })
+};

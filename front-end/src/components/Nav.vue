@@ -5,7 +5,7 @@
         <h1 class="navbar-brand text-danger" href="#"><img class="logo" :src="image.source">Groupomania</h1>
 
         <!--Si la personne est connecté-->
-        <div v-if="isConnected" class="collapse navbar-collapse d-flex justify-content-end ">
+        <div v-if="isConnected()" class="collapse navbar-collapse d-flex justify-content-end ">
             <ul class="navbar-nav">
                 <li class="nav-item ">
                     <router-link to="/wall"  class="nav-link m-2 btn btn-outline-primary text-primary font-weight-bold">Accueil</router-link>
@@ -14,7 +14,10 @@
                     <router-link to="/send" class="nav-link m-2 btn btn-primary text-white font-weight-bold">Poster un article</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/profil" class="nav-link  font-weight-bold"><i id='profil' class="fas fa-user-circle"></i></router-link>
+                    <router-link to="/profil" class="nav-link font-weight-bold"><i id='profil' class="fas fa-user-circle"></i></router-link>
+                </li>
+                <li class="nav-item">
+                    <button @click="disconnected()" class="nav-link m-2 btn btn-danger text-white font-weight-bold"><i class="fas fa-sign-out-alt"></i></button>
                 </li>
             </ul>
         </div>
@@ -40,12 +43,23 @@ export default {
   name : 'Nav',
   data() {
       return {
-          isConnected : false,
           user : 'Marie Robert',
           image : {
               source : '/images/icon.png',
               alt : 'Logo'
           }
+      }
+  },
+  methods : {
+      isConnected : function(){
+          if (localStorage.getItem('token') !== null){
+              return true
+          }
+          return false
+      },
+      disconnected : function(){
+          localStorage.clear();
+          window.location.href = 'http://localhost:8080/login'
       }
   }
 }
