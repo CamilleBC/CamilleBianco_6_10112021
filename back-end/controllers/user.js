@@ -65,12 +65,11 @@ exports.login = (req, res, next)=>{
 };
 
 exports.getOneUser = (req, res, next)=>{
-    //Chercher le token dans le header
+    //Chercher le userId
     const token = req.headers.authorization.split(' ')[1]
-    //Décoder le token
     const decodedToken = jwtUtils.decodedToken(token);
-    //Récupérer le userId du token
     const userId = decodedToken.userId;
+
     //Trouver le User avec l'Id
     models.User.findOne( {attributes:['id', 'name', 'email', 'isAdmin'], where : {id : userId }})
         .then(function(user){
@@ -80,3 +79,67 @@ exports.getOneUser = (req, res, next)=>{
             res.status(400).json({error})
         })
 };
+
+//Modifier email
+exports.modifyUserEmail = (req, res, next)=>{
+    //Chercher userId
+    const token = req.headers.authorization.split(' ')[1]
+    const decodedToken = jwtUtils.decodedToken(token);
+    const userId = decodedToken.userId;
+
+    //Récupérer nouveau mail
+    const newEmail = {...req.body};
+
+    //Modifier dans DB
+    models.User.update({...newEmail, id : userId}, {where : {id: userId}})
+    .then (function(){
+        res.status(200).json({message : 'Email modifié !'})
+    })
+    .catch (function(error){
+        res.status(400).json({error})
+    })
+};
+
+//Modifier mot de passe
+exports.modifyUserPassword = (req, res, next)=>{
+    //Chercher userId
+    const token = req.headers.authorization.split(' ')[1]
+    const decodedToken = jwtUtils.decodedToken(token);
+    const userId = decodedToken.userId;
+    console.log(userId)
+
+    //Récupérer nouveau mot de passe
+    const newPassword = req.body.password;
+    console.log(newPassword)
+    //Hasher le nouveau mot de passe
+    models.User.findOne({where : {id: userId}})
+        .then(function(user){
+            bcrypt.compare(newPassword, user.password)
+            .then(function(samePassword){
+                if(samePassword){
+                    res.status(400).json({message: 'Mot de passe identique.'})
+                }
+                else{
+                    bcrypt.hash(newPassword, 10)
+                    .then(function(hash){
+                        models.User.update({password : hash}, {where : {id : userId}})
+                        .then(function(){
+                            res.status(200).json({message : 'Mot de passe modifié !'})
+                        })
+                        .catch(function(){
+                            res.status(400).json({error})
+                        })
+                    })
+                    .catch(function(error){
+                        res.status(500).json({error})
+                    })
+                }
+            })
+            .catch(function(error){
+                res.status(500).json({error})
+            })
+        })
+        .catch(function(error){
+            res.status(500).json( {error})
+        })
+}

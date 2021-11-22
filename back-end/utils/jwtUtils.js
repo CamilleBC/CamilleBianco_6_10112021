@@ -15,6 +15,6 @@ module.exports = {
             return jwt.verify(
                 token, 
                 this.tokenSecret)
-        }
+        },
 }
 

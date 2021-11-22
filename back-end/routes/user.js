@@ -11,6 +11,8 @@ const verifyPassword = require('../middleware/passwordVerify');
 
 routeur.post('/signup', verifyPassword, userCtrl.signup);
 routeur.post('/login', userCtrl.login);
-routeur.get('/profil', userCtrl.getOneUser)
+routeur.get('/profil', userCtrl.getOneUser);
+routeur.put('/profil/email', userCtrl.modifyUserEmail);
+routeur.put('/profil/password', userCtrl.modifyUserPassword);
 
 module.exports = routeur;

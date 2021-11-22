@@ -1,27 +1,25 @@
 <template>
            
       <div class="card form-group">
-        <h3 class="text-center text-primary">Votre Profil</h3>
-
-      <div class="form-group p-2">
-          <label for="">{{ name }}</label>
-          <input type="text" class="form-control" id="Nom" placeholder="Modifiez votre nom..." required='required'>
-      </div>
+        <h3 class="text-center text-primary">Profil de : {{ name }}</h3>
 
       <div class="form-group p-2">
           <label for="email">{{email}}</label>
-          <input type="text" class="form-control" id="email" placeholder="Modifiez votre email..." required='required'>
+          <input type="text" class="form-control" id="email" v-model="newEmail" placeholder="Nouveau mail..." required='required'>
+          <button @click="modifyEmail()" class="btn btn-warning text-white col-1 mt-2">
+                Modifier
+          </button>
       </div>
 
     <div class="form-group p-2">
-          <label for="email">**********</label>
-          <input type="text" class="form-control" id="email" placeholder="Modifiez votre mot de passe..." required='required'>
+          <label for="password">**********</label>
+          <input type="text" class="form-control" v-model ="newPassword" id="password" placeholder="Nouveau mot de passe..." required='required'>
+           <button @click="modifyPassword()" class="btn btn-warning text-white col-1 mt-2">
+                Modifier
+          </button>
       </div>
 
         <div class="d-flex justify-content-end">
-            <button id='buttonFormulaire'  class="btn btn-secondary col-1 m-2">
-                Modifier
-            </button>
             <button id='buttonFormulaire'  class="btn btn-danger col-1 m-2">
                 Supprimer
             </button>
@@ -32,16 +30,59 @@
 </template>
 
 <script>
+
 export default ({
     name : 'Profil',
     data (){
         return {
             name : "",
             email : "",
-            isAdmin : false
+            isAdmin : false,
+            newEmail : "",
+            newPassword : ""
         }
     },
     methods : {
+        modifyEmail : function(){
+        if(this.email !== this.newEmail){
+        const data = { email : this.newEmail }
+        this.$http.put('http://localhost:3000/api/user/profil/email',
+            data,
+            {headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }})
+                .then(function(res){
+                    console.log(res.body)
+                    if(res.ok){
+                        window.location.reload()
+                    }
+                },
+                function(error){
+                    console.log(error)
+                })
+        }
+        else{
+            console.log('Email identique')
+        }
+    },
+    modifyPassword : function(){
+        const data = { password : this.newPassword }
+        console.log(data)
+        this.$http.put('http://localhost:3000/api/user/profil/password',
+            data,
+            {headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }})
+                .then(function(res){
+                    console.log(res.body)
+                    if(res.ok){
+                        window.location.reload()
+                    }
+                },
+                function(error){
+                    console.log(error)
+                })
+    },
         getUser : function(){
             this.$http.get('http://localhost:3000/api/user/profil',{
                 headers: {
@@ -53,9 +94,13 @@ export default ({
                     this.email = res.body.user.email;
                     this.isAdmin = res.body.user.isAdmin;
                     console.log(res.body)             
-                })
+                },
+                    function(error){
+                        console.log(error)
+                    })
         }
     },
+
     beforeMount(){
         this.getUser()
     }
