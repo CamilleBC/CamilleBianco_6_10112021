@@ -34,9 +34,9 @@ exports.signup = (req, res, next)=>{
 
 exports.login = (req, res, next)=>{
     //Trouver l'utilisateur
-    models.User.findOne({
+    models.User.findOne({where :{ 
         email: req.body.email
-    })
+    }})
         .then(function(user){
             //Si l'utilisateur n'a pas été trouvé
             if(!user){
@@ -72,7 +72,7 @@ exports.getOneUser = (req, res, next)=>{
     //Récupérer le userId du token
     const userId = decodedToken.userId;
     //Trouver le User avec l'Id
-    models.User.findOne( {attributes:['id', 'name', 'email'], where : {id : userId }})
+    models.User.findOne( {attributes:['id', 'name', 'email', 'isAdmin'], where : {id : userId }})
         .then(function(user){
             res.status(200).json({user})
         })

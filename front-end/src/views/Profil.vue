@@ -13,7 +13,7 @@
           <input type="text" class="form-control" id="email" placeholder="Modifiez votre email..." required='required'>
       </div>
 
-      <div class="form-group p-2">
+    <div class="form-group p-2">
           <label for="email">**********</label>
           <input type="text" class="form-control" id="email" placeholder="Modifiez votre mot de passe..." required='required'>
       </div>
@@ -37,7 +37,8 @@ export default ({
     data (){
         return {
             name : "",
-            email : ""
+            email : "",
+            isAdmin : false
         }
     },
     methods : {
@@ -50,7 +51,8 @@ export default ({
                 .then(function(res){
                     this.name = res.body.user.name;
                     this.email = res.body.user.email;
-                    console.log(res.body)
+                    this.isAdmin = res.body.user.isAdmin;
+                    console.log(res.body)             
                 })
         }
     },
