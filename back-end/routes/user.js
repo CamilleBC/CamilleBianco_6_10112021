@@ -14,5 +14,6 @@ routeur.post('/login', userCtrl.login);
 routeur.get('/profil', userCtrl.getOneUser);
 routeur.put('/profil/email', userCtrl.modifyUserEmail);
 routeur.put('/profil/password', userCtrl.modifyUserPassword);
+routeur.delete('/profil', userCtrl.deleteUser)
 
 module.exports = routeur;

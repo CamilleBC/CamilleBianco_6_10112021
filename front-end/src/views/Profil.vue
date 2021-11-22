@@ -13,14 +13,14 @@
 
     <div class="form-group p-2">
           <label for="password">**********</label>
-          <input type="text" class="form-control" v-model ="newPassword" id="password" placeholder="Nouveau mot de passe..." required='required'>
+          <input type="password" class="form-control" v-model ="newPassword" id="password" placeholder="Nouveau mot de passe..." required='required'>
            <button @click="modifyPassword()" class="btn btn-warning text-white col-1 mt-2">
                 Modifier
           </button>
       </div>
 
         <div class="d-flex justify-content-end">
-            <button id='buttonFormulaire'  class="btn btn-danger col-1 m-2">
+            <button @click="deleteUser()"  class="btn btn-danger col-1 m-2">
                 Supprimer
             </button>
         </div>
@@ -30,7 +30,6 @@
 </template>
 
 <script>
-
 export default ({
     name : 'Profil',
     data (){
@@ -43,6 +42,7 @@ export default ({
         }
     },
     methods : {
+
         modifyEmail : function(){
         if(this.email !== this.newEmail){
         const data = { email : this.newEmail }
@@ -65,6 +65,7 @@ export default ({
             console.log('Email identique')
         }
     },
+
     modifyPassword : function(){
         const data = { password : this.newPassword }
         console.log(data)
@@ -83,6 +84,24 @@ export default ({
                     console.log(error)
                 })
     },
+
+        deleteUser : function(){
+            this.$http.delete('http://localhost:3000/api/user/profil', 
+                {headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                }})
+                .then(function(res){
+                    if(res.ok){
+                        localStorage.clear();
+                        window.location.href = 'http://localhost:8080/login'
+                    }
+                    console.log(res),
+                    function(error){
+                        console.log(error)
+                    }
+                })
+        },
+
         getUser : function(){
             this.$http.get('http://localhost:3000/api/user/profil',{
                 headers: {

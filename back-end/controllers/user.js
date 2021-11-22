@@ -142,4 +142,22 @@ exports.modifyUserPassword = (req, res, next)=>{
         .catch(function(error){
             res.status(500).json( {error})
         })
+};
+
+//Supprimer utilisateur
+exports.deleteUser = (req, res, next)=>{
+    //Chercher userId
+    const token = req.headers.authorization.split(' ')[1]
+    const decodedToken = jwtUtils.decodedToken(token);
+    const userId = decodedToken.userId;
+    console.log(userId)
+
+    //Trouver l'utilisateur
+    models.User.destroy({where : {id : userId}})
+        .then(function(){
+            res.status(200).json({message : 'Utilisateur supprimé !'})
+        })  
+        .catch (function(error){
+            res.status(400).json({error})
+        })  
 }
