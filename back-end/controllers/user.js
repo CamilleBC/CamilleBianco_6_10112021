@@ -14,12 +14,12 @@ exports.signup = (req, res, next)=>{
         //Résolution de la promesse avec retour du mdp hasher
         .then(function(hash){
             //Création du nouvel utilisateur
-            const user = models.User.create({
+            models.User.create({
                 name : req.body.name,
                 email : req.body.email, 
                 password : hash,
             })
-                .then (function(newUser){
+                .then (function(user){
                     res.status(200).json({message : user.id})
                 })
                 .catch(function(error){

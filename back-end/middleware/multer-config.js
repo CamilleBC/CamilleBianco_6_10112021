@@ -14,8 +14,6 @@ const MIME_TYPES = {
 //Objet de configuration de multer
 const storage = multer.diskStorage({
     destination : function(req, file, callback){
-        /*1er paramètre null pour indiquer qu'il n'y pas eu d'erreur sur la req, 
-        2ème paramètre nom du dossier*/
         callback(null, 'images')
     }, 
     //Créer un nom de fichier
