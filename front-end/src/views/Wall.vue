@@ -2,11 +2,12 @@
   <div id="wall">
     <h1 class="text-primary text-center">Dernières Publications</h1>
 
-      <div class="card col-10 m-auto mt-1 mb-1">
-        <p><span class="font-weight-bold">{{user}}</span> Posté le {{date}}.</p>
-        <h5 class="card-title text-center p-2 mt-1">Titre de l'article</h5>
+      <div class="card col-10 m-auto mt-1 mb-1" v-for="item of allPost" :key="item.id">
+        <p><span class="font-weight-bold"></span> Posté le {{item.createdAt.split('T')[0]}}.</p>
+        <h5 class="card-title text-center p-2 mt-1">{{item.titre}}</h5>
         <div class="card-body d-flex flex-column">
-          <p class="card-text">Article avec photo et texte</p>
+          <img class="w-75 m-auto" :src="item.imageUrl" alt="">
+          <p class="card-text">{{ item.description }}</p>
           <div class="card-text">
             <div>
               <a href="">Commentaires limités au nombre de 3</a>
@@ -14,8 +15,8 @@
             </div>
             <textarea id="comments" name="comments" rows='5' class="col" placeholder="Ecrire mon commentaire ...">
             </textarea>
-            <div class="d-flex justify-content-center">
-              <button >Envoyer</button>
+            <div class="text-right">
+              <button>Envoyer</button>
             </div>
             <div class="d-flex justify-content-end">
               <p class="mt-3">0</p>
@@ -23,7 +24,9 @@
               <p class="mt-3" >0</p>
               <button class="btn btn-danger m-2"><i class="far fa-thumbs-down"></i></button>
             </div>
-            <button>Effacer</button>
+            <div class="d-flex">
+              <router-link :to="{path :'/modify' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold m-auto">Voir plus</router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -32,34 +35,51 @@
 </template>
 
 <script>
-
 export default {
   name: 'Wall',
   data (){
     return {
-      user : 'Thomas Robert',
-      date : '13/12/21'
+      allPost : "",
+      authorization : false,
+      postId : [], 
+      userId : []
     }
   },
   methods : {
-    generateWall : function(){
-            this.$http.get('MonUrl')
-                .then(
-                    //Succès callback
-                    function(response){
-                        return response.json()
-                        .then(function(resJson){
-                            console.log(resJson);
-                        })
+    //A voir pour faire marcher avec v-if
+    isAuthorized : function(){
+      for(const data of this.allPost) {
+        console.log(data.userId)
+        if(localStorage.getItem('userId') == data.userId){
+          return this.authorization = true;
+        }
+      }
+    },
+    getPostId : function(){
+        
+    },
+  },
+  created(){
+     this.$http.get('http://localhost:3000/api/post',
+            {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                }})
+                .then(function(response){
+                     let allPost = response.body.post
+                     this.allPost = allPost 
+                     console.log(this.allPost)
+                     for (const data of this.allPost){
+                          this.userId.push(data.userId)
+                          console.log(this.postId + " " + this.userId)
+                      }
+                    
                     },
-                    //Erreur callback
-                    function(response){
-                        console.log(response)
-
-                })
-        },     
+                    function(error){
+                        console.log(error)
+                });
+    
   }
-  
 }
 </script>
 <style scoped lang='scss'>

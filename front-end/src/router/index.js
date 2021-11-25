@@ -5,7 +5,7 @@ import SignUp from '../views/SignUp.vue'
 import Login from '../views/Login.vue'
 import Profil from '../views/Profil.vue'
 import Send from '../views/Send.vue'
-
+import Modify from '../views/Modify.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,6 +33,11 @@ const routes = [
     path : '/send',
     name : 'Send',
     component : Send 
+  },
+  {
+    path : '/modify',
+    name : 'Modify',
+    component : Modify 
   },
 ]
 
