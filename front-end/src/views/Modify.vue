@@ -31,7 +31,7 @@
           Modifier
       </a>
       
-      <a @click="modifyPost()" class="text-white fonc-weight-bold btn btn-danger w-25 m-2">
+      <a @click="deletePost()" class="text-white fonc-weight-bold btn btn-danger w-25 m-2">
           Supprimer
       </a>
       </div>
@@ -78,10 +78,10 @@ export default {
             const formData = new FormData();
             formData.append("image", this.imageFile); 
             if(this.titre.length > 0){
-            formData.append("titre", this.titre);
+                formData.append("titre", this.titre);
             }
             if(this.description.length > 0) {
-            formData.append("description", this.description); 
+                formData.append("description", this.description); 
             }      
             this.$http.put('http://localhost:3000/api/post/' + this.id, formData, 
             {headers: {
@@ -92,6 +92,20 @@ export default {
                         window.location.href = 'http://localhost:8080/wall'
                     }
                     console.log(res.body)
+                },
+                function(error){
+                    console.log(error)
+                })
+        },
+        deletePost : function(){
+            this.$http.delete('http://localhost:3000/api/post/' + this.id,
+            {headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }})
+                .then(function(res){
+                    if(res.ok){
+                        window.location.href = 'http://localhost:8080/wall'
+                    }
                 },
                 function(error){
                     console.log(error)

@@ -15,5 +15,6 @@ routeur.post('/', auth, multer, postCtrl.createPost);
 routeur.get('/', auth, multer, postCtrl.getAllPost);
 routeur.get('/:id', auth, postCtrl.getOnePost);
 routeur.put('/:id', auth, multer, postCtrl.modifyPost);
+routeur.delete('/:id', auth, multer, postCtrl.deletePost);
 
 module.exports = routeur;

@@ -76,4 +76,27 @@ exports.modifyPost = (req, res, next) => {
     .catch (function(error){
         res.status(400).json({error})
     })
+};
+
+exports.deletePost = (req, res, next )=>{
+    models.Post.findOne({where : {id : req.params.id}})
+        .then(function(post){
+            //Récupérer le nom du fichier
+            const filename = post.imageUrl.split('/images/')[1]
+            //Supprimer un fichier et la sauce
+            fs.unlink(`images/${filename}`, () =>{
+                models.Post.destroy({where : {id : req.params.id}})
+                    .then(function(){
+                        res.status(200).json({message : 'Post supprimé !'})
+                    })
+                    .catch(function(error){
+                        res.status(400).json({error})
+                    })
+            })
+        })
+        .catch(function(error){
+            res.status(400).json({error})
+        })
+    
+    
 }
