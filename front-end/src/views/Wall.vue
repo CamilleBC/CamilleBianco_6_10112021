@@ -10,13 +10,7 @@
           <p class="card-text">{{ item.description }}</p>
           <div class="card-text">
             <div>
-              <a href="">Commentaires limités au nombre de 3</a>
-              <button>Voir plus</button>
-            </div>
-            <textarea id="comments" name="comments" rows='5' class="col" placeholder="Ecrire mon commentaire ...">
-            </textarea>
-            <div class="text-right">
-              <button>Envoyer</button>
+              <p class="card-text">Nombre de commentaires</p>
             </div>
             <div class="d-flex justify-content-end">
               <p class="mt-3">0</p>
@@ -24,8 +18,9 @@
               <p class="mt-3" >0</p>
               <button class="btn btn-danger m-2"><i class="far fa-thumbs-down"></i></button>
             </div>
-            <div class="d-flex">
-              <router-link :to="{path :'/modify' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold m-auto">Voir plus</router-link>
+            <div class="d-flex justify-content-around">
+              <router-link :to="{path :'/modify' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold">Modifier</router-link>
+              <router-link :to="{path :'/article' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold">Voir Plus</router-link>
             </div>
           </div>
         </div>
@@ -55,9 +50,6 @@ export default {
         }
       }
     },
-    getPostId : function(){
-        
-    },
   },
   created(){
      this.$http.get('http://localhost:3000/api/post',
@@ -78,7 +70,7 @@ export default {
                     function(error){
                         console.log(error)
                 });
-    
+   
   }
 }
 </script>

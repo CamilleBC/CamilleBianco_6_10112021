@@ -27,6 +27,8 @@ app.use(bodyParser.json());
 const userRoutes = require('./routes/user')
 //Importer le routeur Post
 const postRoutes = require('./routes/post')
+//Importer le routeur Comment
+const commentRoutes = require('./routes/comment')
 
 //Importer le chemin du système de fichier
 const path = require('path')
@@ -35,8 +37,10 @@ const path = require('path')
 app.use('/images', express.static(path.join(__dirname, 'images')));
 //Créer le point d'accès de userRoute
 app.use('/api/user', userRoutes);
-//Créer le point d'accès de userRoute
+//Créer le point d'accès de postRoute
 app.use('/api/post', postRoutes);
+//Créer le point d'accès commentRoutes
+app.use('/api/comment', commentRoutes)
 
 //Exporter l'application
 module.exports = app;

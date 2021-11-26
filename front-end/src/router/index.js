@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Profil from '../views/Profil.vue'
 import Send from '../views/Send.vue'
 import Modify from '../views/Modify.vue'
+import Article from '../views/Article.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,6 +39,11 @@ const routes = [
     path : '/modify',
     name : 'Modify',
     component : Modify 
+  },
+  {
+    path : '/article',
+    name : 'Article',
+    component : Article
   },
 ]
 
