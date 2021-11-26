@@ -13,6 +13,7 @@ exports.createPost = (req, res, next)=> {
 
     models.Post.create({
         userId : userId,
+        userName : req.body.userName,
         titre : req.body.titre,
         description : req.body.description,
         imageUrl : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`

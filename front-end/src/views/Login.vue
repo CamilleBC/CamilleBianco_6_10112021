@@ -57,7 +57,8 @@ export default {
         .then(function(res){
             if(res.status === 200) {
               localStorage.setItem('token', res.body.token);
-              localStorage.setItem('userId', res.body.userId)
+              localStorage.setItem('userId', res.body.userId);
+              localStorage.setItem('userName', res.body.name)
               window.location.href = 'http://localhost:8080/wall'
             }
             console.log(res),

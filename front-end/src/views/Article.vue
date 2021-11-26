@@ -4,7 +4,7 @@
 
       <div class="col-10 m-auto mt-1 mb-1">
         <div class="card">
-        <p><span class="font-weight-bold"></span> Posté le {{post.createdAt.split('T')[0]}}.</p>
+        <p><span class="font-weight-bold">{{post.userName}}</span> Posté le {{post.createdAt.split('T')[0]}}.</p>
         <h5 class="card-title text-center p-2 mt-1">{{post.titre}}</h5>
         <div class="card-body d-flex flex-column">
           <img class="w-75 m-auto" :src="post.imageUrl" alt="">
@@ -26,9 +26,9 @@
                             <button @click="createComment()">Envoyer</button>
                         </div>
                     </div>
-                    <li class="card">
-                        <p class="card-title">UserName : posté le .</p>
-                        <div class="card-body">Commentaire</div>
+                    <li class="card" v-for="item of allComments" :key="item.id">
+                        <p class="card-title">{{ item.userName }} : posté le {{ item.createdAt.split('T')[0]}} .</p>
+                        <div class="card-body">{{ item.content }}</div>
                         <div class="d-flex justify-content-end">
                             <button  class="m-2">Modifier</button>
                             <button class="m-2">Supprimer</button>
@@ -50,6 +50,7 @@ export default ({
             id : parseFloat(window.location.search.substr(4)),
             post : "",
             content : "",
+            allComments : []
 
         }
     },
@@ -64,6 +65,23 @@ export default ({
             .then(function(response){
                 this.post = response.body.post
                 console.log(this.post)
+            },
+            function(error){
+                console.log(error)
+            });
+        this.$http.get('http://localhost:3000/api/comment',
+        { 
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(function(response){
+                for(const comment of response.body.comment){
+                    if(comment.postId == this.id){
+                        this.allComments.push(comment)
+                        console.log(this.allComments)
+                    }
+                }
             },
             function(error){
                 console.log(error)

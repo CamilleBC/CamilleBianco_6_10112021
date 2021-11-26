@@ -27,5 +27,13 @@ exports.createComment = (req, res, next) =>{
         .catch(function(error){
             res.status(400).json({error})
         })
-    
+};
+exports.getAllComments =(req, res, next )=>{
+    models.Comment.findAll()
+    .then(function(comment){
+        res.status(200).json({comment})
+    })
+    .catch(function(error){
+        res.status(400).json({error})
+    })
 }

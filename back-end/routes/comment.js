@@ -9,6 +9,7 @@ const commentCtrl = require('../controllers/comment');
 //Importer le middleware Auth
 const auth = require('../middleware/auth');
 
-routeur.post('/', auth, commentCtrl.createComment)
+routeur.post('/', auth, commentCtrl.createComment);
+routeur.get('/', auth, commentCtrl.getAllComments);
 
 module.exports = routeur;

@@ -48,7 +48,8 @@ export default {
             const formData = new FormData();
             formData.append("image", this.imageFile); 
             formData.append("titre", this.titre);
-            formData.append("description", this.description);        
+            formData.append("description", this.description);
+            formData.append('userName', localStorage.getItem('userName'))        
             this.$http.post('http://localhost:3000/api/post', formData, 
             {headers: {
                 Authorization: "Bearer " + localStorage.getItem("token")

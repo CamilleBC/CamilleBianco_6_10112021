@@ -52,7 +52,8 @@ exports.login = (req, res, next)=>{
                     //Si le mdp est valide
                     res.status(200).json({
                         userId : user.id,
-                        token : jwtUtils.generateToken(user)
+                        token : jwtUtils.generateToken(user),
+                        name : user.name
                     })
                 })
                 .catch(function(error){
