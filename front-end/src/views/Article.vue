@@ -29,20 +29,33 @@
                     <li class="card" v-for="item of allComments" :key="item.id">
                         <p class="card-title">{{ item.userName }} : posté le {{ item.createdAt.split('T')[0]}} .</p>
                         <div class="card-body">{{ item.content }}</div>
-                        <div class="d-flex justify-content-end">
-                            <button  class="m-2">Modifier</button>
-                            <button class="m-2">Supprimer</button>
+                        <div class="d-flex ">
+                            <div class="col">
+                                <button id="buttonModify" @click="toggleModifyComment()" class="text-white btn btn-warning m-2">Modifier</button>
+                                <div id="modifyComment"  style="display:none" >
+                                    <textarea name="modifyComment" id="modify" class="col" rows="10" :placeholder='item.content' v-model="modifyContent">
+                                        
+                                    </textarea>
+                                    <div class="d-flex justify-content-end">
+                                        <button @click=" modifyComment(item.id)" class="btn btn-warning">Valider la modification</button>
+                                    </div>
+                                </div>
+                                <button id="buttonDelete" @click="deleteComment(item.id)" class="text-white btn btn-danger m-2">Supprimer</button>
+                            </div>
+                            
+                        </div>
+                        <div class="d-flex ">
+                        
                         </div>
                     </li>
                 </ul>
             </div>
-            
-            
-           
           </div>  
 </template>
 
 <script>
+
+
 export default ({
     name : 'Article',
     data (){
@@ -50,6 +63,7 @@ export default ({
             id : parseFloat(window.location.search.substr(4)),
             post : "",
             content : "",
+            modifyContent : "",
             allComments : []
 
         }
@@ -88,6 +102,15 @@ export default ({
             })
     },
     methods :{
+        toggleModifyComment : function(){
+            const modifyComment = document.getElementById('modifyComment');
+            if (modifyComment.style.display !== 'none') {
+                modifyComment.style.display = 'none';
+            }
+            else {
+            modifyComment.style.display = 'block';
+            }
+        },
         createComment : function(){
             const comment = {content : this.content, postId : this.id};
             this.$http.post('http://localhost:3000/api/comment', comment,
@@ -96,6 +119,42 @@ export default ({
                 Authorization: "Bearer " + localStorage.getItem("token")
                 }
             })
+                .then(function(res){
+                    if(res.ok){
+                        window.location.reload()
+                    }
+                    console.log(res.body)
+                },
+                function(error){
+                    console.log(error)
+                })
+        },
+        modifyComment : function(id){
+                const data ={content : this.modifyContent}
+                console.log(data)
+                this.$http.put('http://localhost:3000/api/comment/'+ id, data,
+                {
+                    headers : {
+                        Authorization: "Bearer " + localStorage.getItem("token")
+
+                }})
+                    .then(function(res){
+                         if(res.ok){
+                            window.location.reload()
+                        }
+                        console.log(res.body)
+                    },
+                    function(error){
+                        console.log(error)
+                    })
+
+        },
+        deleteComment : function(id){
+            this.$http.delete('http://localhost:3000/api/comment/'+ id,
+            {
+                headers : {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+            }})
                 .then(function(res){
                     if(res.ok){
                         window.location.reload()

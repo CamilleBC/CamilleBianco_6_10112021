@@ -3,7 +3,7 @@
     <h1 class="text-primary text-center">Dernières Publications</h1>
 
       <div class="card col-10 m-auto mt-1 mb-1" v-for="item of allPost" :key="item.id">
-        <p><span class="font-weight-bold">{{item.userName}} </span> Posté le {{item.createdAt.split('T')[0]}}.</p>
+        <p><span class="font-weight-bold">{{item.userName}} </span> Posté le {{item.createdAt}}.</p>
         <h5 class="card-title text-center p-2 mt-1">{{item.titre}}</h5>
         <div class="card-body d-flex flex-column">
           <img class="w-75 m-auto" :src="item.imageUrl" alt="">
@@ -40,6 +40,9 @@ export default {
       userId : []
     }
   },
+  computed : {
+     
+  },
   methods : {
     //A voir pour faire marcher avec v-if
     isAuthorized : function(){
@@ -50,6 +53,10 @@ export default {
         }
       }
     },
+    //A peaufiner pour appliquer
+     dateSplitCreatedAt : function(date){
+          date.split('T'[0])
+      },
   },
   created(){
      this.$http.get('http://localhost:3000/api/post',

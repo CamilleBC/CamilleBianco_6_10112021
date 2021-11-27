@@ -36,4 +36,23 @@ exports.getAllComments =(req, res, next )=>{
     .catch(function(error){
         res.status(400).json({error})
     })
+};
+exports.modifyComment = (req, res, next) => {
+    const commentObject = req.body
+    models.Comment.update({...commentObject}, {where : {id : req.params.id, }})
+        .then(function(){
+            res.status(200).json({message : 'Commentaire modifié !'})
+        })
+        .catch (function(error){
+            res.status(400).json({error})
+        })
+};
+exports.deleteComment = (req, res, next) => {
+    models.Comment.destroy({where : {id : req.params.id}})
+        .then(function(){
+            res.status(200).json({message : 'Commentaire effacé !'})
+        })
+        .catch(function(error){
+            res.status(400).json({error})
+        })
 }
