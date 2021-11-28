@@ -156,11 +156,25 @@ exports.deleteUser = (req, res, next)=>{
     console.log(userId)
 
     //Trouver l'utilisateur
-    models.User.destroy({where : {id : userId}})
+    models.Post.destroy({where: {userId : userId}})
         .then(function(){
-            res.status(200).json({message : 'Utilisateur supprimé !'})
-        })  
-        .catch (function(error){
-            res.status(400).json({error})
-        })  
+            models.Comment.destroy({where:{userId : userId}})
+            .then(function(){
+                models.User.destroy({where : {id : userId}})
+                .then(function(){
+                    res.status(200).json({message : 'Utilisateur supprimé !'})
+                })  
+                .catch (function(error){
+                    res.status(400).json({error})
+                })  
+            })
+            .catch(function(error){
+                res.status(400).json({message : 'Erreur lors de la suppression des commentaires'})
+            })
+
+        })
+        .catch(function(error){
+            res.status(400).json({message : 'Erreur lors de la suppression des posts'})
+        })
+   
 }
