@@ -13,10 +13,11 @@
               <p class="card-text">Nombre de commentaires</p>
             </div>
             <div class="d-flex justify-content-end">
-              <p class="mt-3">0</p>
-              <button id = 'like' class=" btn btn-primary m-2"><i class="far fa-thumbs-up"></i></button>
-              <p class="mt-3" >0</p>
-              <button class="btn btn-danger m-2"><i class="far fa-thumbs-down"></i></button>
+              <p class="m-2">{{item.like}}</p>
+              <p class=" text-primary m-2"><i class="far fa-thumbs-up"></i></p>
+              <p class="m-2" >{{item.dislike}}</p>
+              <p class=" text-danger m-2"><i class="far fa-thumbs-down"></i></p>
+              
             </div>
             <div class="d-flex justify-content-around">
               <router-link :to="{path :'/modify' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold">Modifier</router-link>

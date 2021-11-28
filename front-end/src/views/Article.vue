@@ -4,17 +4,17 @@
 
       <div class="col-10 m-auto mt-1 mb-1">
         <div class="card">
-        <p><span class="font-weight-bold">{{post.userName}}</span> Posté le {{post.createdAt.split('T')[0]}}.</p>
+        <p><span class="font-weight-bold">{{post.userName}}</span> Posté le {{post.createdAt}}.</p>
         <h5 class="card-title text-center p-2 mt-1">{{post.titre}}</h5>
         <div class="card-body d-flex flex-column">
           <img class="w-75 m-auto" :src="post.imageUrl" alt="">
           <p class="card-text">{{post.description}}</p>
         </div>
          <div class="d-flex justify-content-end">
-              <p class="mt-3">0</p>
-              <button id = 'like' class=" btn btn-primary m-2"><i class="far fa-thumbs-up"></i></button>
-              <p class="mt-3" >0</p>
-              <button class="btn btn-danger m-2"><i class="far fa-thumbs-down"></i></button>
+              <p class="mt-3">{{post.like}}</p>
+              <button id="like" @click="updateLike()" data-value="1" class=" btn btn-primary m-2" :disabled='disableLike'><i class="far fa-thumbs-up"></i></button>
+              <p class="mt-3" >{{post.dislike}}</p>
+              <button id="dislike" @click="updateDislike()" class="btn btn-danger m-2" data-value="-1" :disabled='disableDislike'><i class="far fa-thumbs-down"></i></button>
             </div>
         </div>
                 <ul>
@@ -63,6 +63,8 @@ export default ({
             id : parseFloat(window.location.search.substr(4)),
             post : "",
             content : "",
+            disableLike : false,
+            disableDislike : false,
             modifyContent : "",
             allComments : []
 
@@ -164,6 +166,94 @@ export default ({
                 function(error){
                     console.log(error)
                 })
+        },
+        updateLike : function(){
+            const value = parseFloat(document.getElementById('like').getAttribute('data-value'))
+            if(value == 1){
+                document.getElementById('like').setAttribute('data-value', 0)
+                const data = { like : 1}
+                const url ='http://localhost:3000/api/post/' + this.id + '/like'
+                this.$http.post(url, data,
+                { 
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                    }
+                })
+                    .then(function(res){
+                        console.log(res.body)
+                        if(res.ok){
+                            window.location.reload()
+                        }
+                    },
+                    function(error){
+                        console.log(error)
+                    })
+            }
+            else {
+                document.getElementById('like').setAttribute('data-value', 1)
+                const data = { like : 0}
+                const url ='http://localhost:3000/api/post/' + this.id + '/like'
+                this.$http.post(url, data,
+                { 
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                    }
+                })
+                    .then(function(res){
+                        console.log(res.body)
+                        if(res.ok){
+                            window.location.reload()
+                        }
+                    },
+                    function(error){
+                        console.log(error)
+                    })
+
+            }
+        },
+        updateDislike : function(){
+                const value = parseFloat(document.getElementById('dislike').getAttribute('data-value'))
+            if(value == -1){
+                document.getElementById('dislike').setAttribute('data-value', 0)
+                const data = { like : -1}
+                const url ='http://localhost:3000/api/post/' + this.id + '/like'
+                this.$http.post(url, data,
+                { 
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                    }
+                })
+                    .then(function(res){
+                        console.log(res.body)
+                        if(res.ok){
+                            window.location.reload()
+                        }
+                    },
+                    function(error){
+                        console.log(error)
+                    })
+            }
+            else {
+                document.getElementById('dislike').setAttribute('data-value', -1)
+                const data = { like : 0}
+                const url ='http://localhost:3000/api/post/' + this.id + '/like'
+                this.$http.post(url, data,
+                { 
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token")
+                    }
+                })
+                    .then(function(res){
+                        console.log(res.body)
+                        if(res.ok){
+                            window.location.reload()
+                        }
+                    },
+                    function(error){
+                        console.log(error)
+                    })
+
+            }
         }
     }
 })

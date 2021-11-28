@@ -24,7 +24,14 @@ module.exports = (sequelize, DataTypes) => {
     imageUrl : {
       type : DataTypes.STRING,
       allowNull : false
-    }
+    },
+    like: {
+      type : DataTypes.INTEGER,
+      defaultvalue : 0},
+    dislike : {
+      type : DataTypes.INTEGER,
+      defaultValue : 0
+    },
   }, {
     sequelize,
     modelName: 'Post',
