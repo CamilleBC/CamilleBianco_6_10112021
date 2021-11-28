@@ -9,9 +9,6 @@
           <img class="w-75 m-auto" :src="item.imageUrl" alt="">
           <p class="card-text">{{ item.description }}</p>
           <div class="card-text">
-            <div>
-              <p class="card-text">Nombre de commentaires</p>
-            </div>
             <div class="d-flex justify-content-end">
               <p class="m-2">{{item.like}}</p>
               <p class=" text-primary m-2"><i class="far fa-thumbs-up"></i></p>
@@ -19,8 +16,11 @@
               <p class=" text-danger m-2"><i class="far fa-thumbs-down"></i></p>
               
             </div>
-            <div class="d-flex justify-content-around">
+            <div v-if="item.authorization" class="d-flex justify-content-around">
               <router-link :to="{path :'/modify' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold">Modifier</router-link>
+              <router-link :to="{path :'/article' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold">Voir Plus</router-link>
+            </div>
+            <div v-else class="d-flex justify-content-around">
               <router-link :to="{path :'/article' , query: { id: item.id }}" class="btn btn-outline-primary text-primary font-weight-bold">Voir Plus</router-link>
             </div>
           </div>
@@ -35,28 +35,41 @@ export default {
   name: 'Wall',
   data (){
     return {
-      allPost : "",
-      authorization : false,
-      postId : [], 
-      userId : []
+      allPost : [],
+      userId : localStorage.getItem('userId'),
+      authorization: [],
     }
   },
-  computed : {
-     
-  },
+ 
   methods : {
-    //A voir pour faire marcher avec v-if
+    //Authorisation d'accès au fonctionnalité modifier et supprimer
     isAuthorized : function(){
-      for(const data of this.allPost) {
-        console.log(data.userId)
-        if(localStorage.getItem('userId') == data.userId){
-          return this.authorization = true;
+      for (const data of this.allPost ){
+          if(this.userId == data.userId || data.isAdmin == true){
+            let authorization = {authorization : true}
+            Object.assign(data, authorization)
+            
+          }
+          else{
+            let authorization = {authorization : false}
+            Object.assign(data, authorization)
+          }         
         }
-      }
-    },
-    //A peaufiner pour appliquer
-     dateSplitCreatedAt : function(date){
-          date.split('T'[0])
+      },
+    
+    //Changer la date 
+     dateSplitCreatedAt : function(){
+       for (const data of this.allPost){
+        const useDate = data.createdAt.split('T')[0]
+        const splitDate = useDate.split('-')
+        const year = splitDate[0]
+        const month = splitDate[1]
+        const day = splitDate[2]
+        const frenchDate = day + '/'+ month +'/' + year
+        
+        let newDate = {createdAt : frenchDate}
+        Object.assign(data, newDate)
+        }
       },
   },
   created(){
@@ -67,19 +80,16 @@ export default {
                 }})
                 .then(function(response){
                      let allPost = response.body.post
-                     this.allPost = allPost 
+                     this.allPost = allPost.reverse() 
                      console.log(this.allPost)
-                     for (const data of this.allPost){
-                          this.userId.push(data.userId)
-                          console.log(this.postId + " " + this.userId)
-                      }
-                    
+                      this.isAuthorized()   
+                      this.dateSplitCreatedAt()             
                     },
                     function(error){
                         console.log(error)
                 });
-   
-  }
+    },
+    
 }
 </script>
 <style scoped lang='scss'>

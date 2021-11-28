@@ -4,7 +4,7 @@
 
       <div class="col-10 m-auto mt-1 mb-1">
         <div class="card">
-        <p><span class="font-weight-bold">{{post.userName}}</span> Posté le {{post.createdAt}}.</p>
+        <p><span class="font-weight-bold">{{post.userName}}</span> Posté le {{post.frenchDate}}.</p>
         <h5 class="card-title text-center p-2 mt-1">{{post.titre}}</h5>
         <div class="card-body d-flex flex-column">
           <img class="w-75 m-auto" :src="post.imageUrl" alt="">
@@ -61,6 +61,7 @@ export default ({
     data (){
         return {
             id : parseFloat(window.location.search.substr(4)),
+            date : "",
             post : "",
             content : "",
             disableLike : false,
@@ -80,7 +81,7 @@ export default ({
         )
             .then(function(response){
                 this.post = response.body.post
-                console.log(this.post)
+                this.dateSplitCreatedAt(this.post.createdAt)
             },
             function(error){
                 console.log(error)
@@ -103,7 +104,23 @@ export default ({
                 console.log(error)
             })
     },
+    computed : {
+          //Changer la date 
+    
+    },
     methods :{
+         dateSplitCreatedAt : function(data){
+             console.log(data)
+            const useDate = data.split('T')[0]
+            const splitDate = useDate.split('-')
+            const year = splitDate[0]
+            const month = splitDate[1]
+            const day = splitDate[2]
+            const date ={ frenchDate : day + '/'+ month +'/' + year}
+            Object.assign(this.post, date)
+            
+        },
+      
         toggleModifyComment : function(){
             const modifyComment = document.getElementById('modifyComment');
             if (modifyComment.style.display !== 'none') {

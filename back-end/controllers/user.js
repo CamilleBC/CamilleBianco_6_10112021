@@ -41,6 +41,7 @@ exports.login = (req, res, next)=>{
             //Si l'utilisateur n'a pas été trouvé
             if(!user){
                 return res.status(401).json({message: 'Utilisateur non trouvé.'})
+                
             }
             //Comparer le mdp avec celui dans le BDD
             bcrypt.compare(req.body.password, user.password)
@@ -53,7 +54,8 @@ exports.login = (req, res, next)=>{
                     res.status(200).json({
                         userId : user.id,
                         token : jwtUtils.generateToken(user),
-                        name : user.name
+                        name : user.name,
+                        isAdmin : user.isAdmin
                     })
                 })
                 .catch(function(error){

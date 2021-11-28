@@ -30,7 +30,8 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <div class="form-outline flex-fill mb-0">
                       <label class="form-label" for="Mot de passe">Votre mot de passe</label>
-                      <input type="password" v-model="password" id="Mot de Passe" class="form-control" />
+                      <input v-b-popover.hover.top="'Au minimum 8 caractères avec majuscule, caratères spéciaux, chiffre.'" type="password" v-model="password" id="Mot de Passe" class="form-control" />
+                      <p v-if="infoPassword" class="text-danger text-center">Votre mot de passe doit contenir au minimum 8 caractères avec au moins une majuscule, un caractère spécial et un chiffre.</p>
                     </div>
                   </div>
 
@@ -56,7 +57,8 @@ export default {
         //Reprise des éléments du formulaires grâce à la directive v-model
         name : "",
         email : "",
-        password :""
+        password :"",
+        infoPassword : false
 
       }
     },
@@ -77,6 +79,7 @@ export default {
           },
           //Si envoi échoué
           function(error){
+            this.infoPassword = true
             console.log(error.body)
           })
         },

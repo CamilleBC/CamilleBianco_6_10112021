@@ -27,7 +27,6 @@
                       <input type="password" v-model="password" id="Mot de Passe" class="form-control" />
                     </div>
                   </div>
-
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                     <button type="button" @click="login()" class="btn btn-primary btn-lg">Connecter</button>
                   </div>
@@ -55,10 +54,11 @@ export default {
       const data = {email : this.email, password : this.password}
       this.$http.post('http://localhost:3000/api/user/login', data)
         .then(function(res){
-            if(res.status === 200) {
+            if(res.ok) {
               localStorage.setItem('token', res.body.token);
               localStorage.setItem('userId', res.body.userId);
-              localStorage.setItem('userName', res.body.name)
+              localStorage.setItem('userName', res.body.name);
+              localStorage.setItem('isAdmin', res.body.isAdmin)
               window.location.href = 'http://localhost:8080/wall'
             }
             console.log(res),
