@@ -37,6 +37,7 @@ export default {
     return {
       allPost : [],
       userId : localStorage.getItem('userId'),
+      isAdmin : localStorage.getItem('isAdmin'),
       authorization: [],
     }
   },
@@ -45,10 +46,15 @@ export default {
     //Authorisation d'accès au fonctionnalité modifier et supprimer
     isAuthorized : function(){
       for (const data of this.allPost ){
-          if(this.userId == data.userId || data.isAdmin == true){
+        console.log(typeof this.isAdmin)
+          if(this.userId == data.userId ){
             let authorization = {authorization : true}
             Object.assign(data, authorization)
             
+          }
+          else if (this.isAdmin == 'true'){
+            let authorization = {authorization : true}
+            Object.assign(data, authorization)
           }
           else{
             let authorization = {authorization : false}

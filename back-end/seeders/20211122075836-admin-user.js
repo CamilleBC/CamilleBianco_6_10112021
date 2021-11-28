@@ -1,12 +1,13 @@
 'use strict';
+require('dotenv').config()
 const bcrypt = require('bcrypt');
-const hash = bcrypt.hashSync('Groupomania.2021@76398', 10);
+const hash = bcrypt.hashSync(process.env.adminPassword, 10);
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Users', [{
        name: 'Admin',
-       email : 'groupomania.admin@gmail.com',
+       email : process.env.adminEmail,
        password : hash,
        isAdmin : true,
        createdAt : new Date(),
