@@ -20,7 +20,7 @@
       </div>
 
         <div class="d-flex justify-content-end">
-            <button @click="deleteUser()"  class="btn btn-danger col-lg-1 col-4 m-2">
+            <button @click="deleteUser()"  class="btn btn-danger col-lg-2 col-4 m-2">
                 Supprimer
             </button>
         </div>

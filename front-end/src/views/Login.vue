@@ -17,6 +17,7 @@
                     <div class="form-outline flex-fill mb-0">
                         <label aria-label='email' class="form-label" for="email">Email</label>
                         <input type="email" v-model="email" id="email" class="form-control" />
+                        <div class="text-danger text-center" v-if="infoEmail" >Utilisateur inconnu</div>
                     </div>
                   </div>
 
@@ -24,7 +25,9 @@
                     <div class="form-outline flex-fill mb-0">
                       <label class="form-label" for="Mot de passe">Mot de passe</label>
                       <input aria-label='Mot de passe' type="password" v-model="password" id="Mot de Passe" class="form-control" />
+                    <div class="text-danger text-center" v-if="infoPassword" >Mot de passe incorrecte</div>
                     </div>
+                    
                   </div>
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                     <button type="button" @click="login()" class="btn btn-primary btn-lg">Connecter</button>
@@ -45,7 +48,9 @@ export default {
   data (){
     return{
       email : "",
-      password : ""
+      password : "",
+      infoPassword : false,
+      infoEmail : false
     }
   },
   methods : {
@@ -60,10 +65,16 @@ export default {
               localStorage.setItem('isAdmin', res.body.isAdmin)
               window.location.href = 'http://localhost:8080/wall'
             }
-            console.log(res),
-          function(error){
-            console.log(error)
+            console.log(res)
+        })
+        .catch(function(error){
+          if(error.status === 400){
+            this.infoPassword = true
           }
+          else{
+            this.infoEmail = true
+          }
+          console.log(error)
         })
     }
       
