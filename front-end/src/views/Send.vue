@@ -1,9 +1,9 @@
 <template>
 
-  <div class="card"> 
+  <div > 
       <form enctype="multipart/form-data">      
       <div class="form-group">
-        <h3 class="text-center text-primary">Article à poster</h3>
+        <h3 class="text-center text-danger pb-4 pt-4">Article à poster</h3>
 
       <div class="form-group p-2">
           <input type="text" class="form-control" v-model="titre" id="titre" placeholder="Titre de l'article" required='required'>

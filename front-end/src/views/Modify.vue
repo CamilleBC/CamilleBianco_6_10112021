@@ -1,9 +1,9 @@
 <template>
 
-  <div class="card"> 
+  <div> 
       <form enctype="multipart/form-data">      
       <div class="form-group">
-        <h3 class="text-center text-primary">Article à modifier</h3>
+        <h3 class="text-center text-danger pb-4 pt-4">Article à modifier</h3>
 
       <div class="form-group p-2">
           <label class="font-italic" for="titre"><span class="font-weight-bold font-italic">Votre titre</span> : {{post.titre}}</label>

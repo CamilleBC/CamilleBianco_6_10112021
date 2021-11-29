@@ -1,12 +1,12 @@
 <template>
            
       <div class="card form-group">
-        <h3 class="text-center text-primary">Profil de : {{ name }}</h3>
+        <h3 class="text-center text-danger pb-4 pt-4">Profil de : <br> <span class="font-weight-bold font-italic"> {{ name }} </span></h3>
 
       <div class="form-group p-2">
           <label for="email">{{email}}</label>
           <input type="text" class="form-control" id="email" v-model="newEmail" placeholder="Nouveau mail..." required='required'>
-          <button @click="modifyEmail()" class="btn btn-warning text-white col-1 mt-2">
+          <button @click="modifyEmail()" class="btn btn-warning col-lg-1 col-4 mt-2">
                 Modifier
           </button>
       </div>
@@ -14,13 +14,13 @@
     <div class="form-group p-2">
           <label for="password">**********</label>
           <input type="password" class="form-control" v-model ="newPassword" id="password" placeholder="Nouveau mot de passe..." required='required'>
-           <button @click="modifyPassword()" class="btn btn-warning text-white col-1 mt-2">
+           <button @click="modifyPassword()" class="btn btn-warning col-lg-1 col-4 mt-2">
                 Modifier
           </button>
       </div>
 
         <div class="d-flex justify-content-end">
-            <button @click="deleteUser()"  class="btn btn-danger col-1 m-2">
+            <button @click="deleteUser()"  class="btn btn-danger col-lg-1 col-4 m-2">
                 Supprimer
             </button>
         </div>
@@ -125,3 +125,9 @@ export default ({
     }
 })
 </script>
+
+<style scoped>
+.btn {
+    font-size: 1.2rem;
+}
+</style>

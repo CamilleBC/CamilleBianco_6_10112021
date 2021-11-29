@@ -1,25 +1,28 @@
 <template>
 
-    <nav class="navbar navbar-expand-lg navbar-light">   
+    <nav class="navbar navbar-expand d-flex justify-content-between flex-lg-row flex-column navbar-light">   
 
-        <h1 class="navbar-brand text-danger" href="#"><img class="logo" :src="image.source">Groupomania</h1>
+        <h1 id="titreLogo" class="navbar-brand text-danger align-self-start" href="#"><img class="logo" :src="image.source" alt="Logo Groupomania">Groupomania</h1>
 
         <!--Si la personne est connecté-->
-        <div v-if="isConnected()" class="collapse navbar-collapse d-flex justify-content-end ">
-            <ul class="navbar-nav">
-                <li class="nav-item ">
-                    <router-link to="/wall"  class="nav-link m-2 btn btn-outline-primary text-primary font-weight-bold">Accueil</router-link>
-                </li>
+        <div v-if="isConnected()" class="d-flex flex-column-reverse flex-xl-row">
+            <ul class="navbar-nav d-flex justify-content-center">
                 <li class="nav-item">
                     <router-link to="/send" class="nav-link m-2 btn btn-primary text-white font-weight-bold">Poster un article</router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link to="/profil" class="nav-link font-weight-bold"><i id='profil' class="fas fa-user-circle"></i></router-link>
+                </ul>
+                <ul class="navbar-nav mb-4">
+                <li class="nav-item ">
+                    <router-link to="/wall" class="nav-link m-2 btn btn-outline-primary text-primary font-weight-bold">Accueil</router-link>
                 </li>
                 <li class="nav-item">
-                    <button @click="disconnected()" class="nav-link m-2 btn btn-danger text-white font-weight-bold"><i class="fas fa-sign-out-alt"></i></button>
+                    <router-link to="/profil" aria-label="Profil" class="nav-link font-weight-bold"><i id='profil' class="fas fa-user-circle"></i></router-link>
                 </li>
-            </ul>
+                <li class="nav-item">
+                    <button @click="disconnected()" aria-label="Déconnection" class="nav-link m-2 btn btn-danger text-white font-weight-bold"><i class="fas fa-sign-out-alt"></i></button>
+                </li>
+                </ul>
+           
         </div>
 
         <!--Si la personne n'est connecté-->
@@ -68,14 +71,19 @@ export default {
 <style scoped lang='scss'>
 @import '../app.scss';
     .logo {
-        height: 3rem;
+        height: 5rem;
     }
     .btn {
         border-radius: 9999px;
         border-width: 2px;
+        font-size: 1.5rem;
     }
+  
     #profil {
-        font-size: 3rem;
+        font-size: 3.5rem;
         color: #007bff;
+    }
+    #titreLogo{
+        font-size: 2rem;
     }
 </style>

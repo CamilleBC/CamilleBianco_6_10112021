@@ -1,10 +1,9 @@
 <template>
 
-    <section class="vh-100">
       
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-12 col-xl-11">
-          <div class="card text-black" style="border-radius: 25px;">
+        <div class="col-lg-12 col-xl-11 col-11">
+          <div class="text-black" >
             <div class="row justify-content-center">
               
               <div class="col-lg-6">
@@ -16,7 +15,7 @@
 
                   <div class="d-flex flex-row align-items-center mb-4">
                     <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="email">Email</label>
+                        <label aria-label='email' class="form-label" for="email">Email</label>
                         <input type="email" v-model="email" id="email" class="form-control" />
                     </div>
                   </div>
@@ -24,7 +23,7 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <div class="form-outline flex-fill mb-0">
                       <label class="form-label" for="Mot de passe">Mot de passe</label>
-                      <input type="password" v-model="password" id="Mot de Passe" class="form-control" />
+                      <input aria-label='Mot de passe' type="password" v-model="password" id="Mot de Passe" class="form-control" />
                     </div>
                   </div>
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
@@ -37,7 +36,7 @@
         </div>
       </div>
   </div>
-</section>
+
 </template>
 
 <script>
@@ -76,5 +75,8 @@ export default {
 section {
   background-color:  #eee;
  }
+ .btn {
+    font-size: 1.5rem;
+}
 
 </style>

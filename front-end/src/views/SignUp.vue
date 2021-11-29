@@ -1,15 +1,14 @@
 <template>
 
-    <section class="vh-100">
       
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-12 col-xl-11">
-          <div class="card text-black" style="border-radius: 25px;">
+        <div class="col-lg-12 col-xl-11 col-11">
+          <div class="text-black">
             <div class="row justify-content-center">
               
               <div class="col-lg-6">
 
-                <p class="text-danger h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Créer un compte.</p>
+                <p class="text-danger h1 fw-bold mb-5 mx-1 mx-md-4 mt-4 ">Créer un compte.</p>
 
                 <form class="mx-1 mx-md-4">
 
@@ -30,7 +29,7 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <div class="form-outline flex-fill mb-0">
                       <label class="form-label" for="Mot de passe">Votre mot de passe</label>
-                      <input v-b-popover.hover.top="'Au minimum 8 caractères avec majuscule, caratères spéciaux, chiffre.'" type="password" v-model="password" id="Mot de Passe" class="form-control" />
+                      <input v-b-popover.hover.top="'Au minimum 8 caractères avec majuscule, caratères spéciaux, chiffre.'" aria-label="Mot de passe" type="password" v-model="password" id="Mot de Passe" class="form-control" />
                       <p v-if="infoPassword" class="text-danger text-center">Votre mot de passe doit contenir au minimum 8 caractères avec au moins une majuscule, un caractère spécial et un chiffre.</p>
                     </div>
                   </div>
@@ -45,7 +44,6 @@
         </div>
       </div>
   </div>
-</section>
 
 </template>
 <script>
@@ -92,5 +90,8 @@ export default {
 section {
   background-color:  #eee;
  }
+  .btn {
+    font-size: 1.5rem;
+}
 
 </style>

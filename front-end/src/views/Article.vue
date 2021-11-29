@@ -1,54 +1,57 @@
 <template>
   <div id="wall">
-    <h1 class="text-primary text-center">Dernières Publications</h1>
+    <h1 class="text-danger text-center pb-4 pt-4">Article sélectionné</h1>
 
       <div class="col-10 m-auto mt-1 mb-1">
         <div class="card">
-        <p><span class="font-weight-bold">{{post.userName}}</span> Posté le {{post.frenchDate}}.</p>
-        <h5 class="card-title text-center p-2 mt-1">{{post.titre}}</h5>
+        <p><span class="font-weight-bold">{{post.userName}} : </span> Posté le {{post.frenchDate}}</p>
+        <h2 class="card-title text-center p-2 mt-1">{{post.titre}}</h2>
         <div class="card-body d-flex flex-column">
-          <img class="w-75 m-auto" :src="post.imageUrl" alt="">
-          <p class="card-text">{{post.description}}</p>
+          <img class="w-75 m-auto" :src="post.imageUrl" alt="Image de l'article">
+          <p class="card-text m-auto p-2 h4 font-weight-light">{{post.description}}</p>
         </div>
          <div class="d-flex justify-content-end">
               <p class="mt-3">{{post.like}}</p>
-              <button id="like" @click="updateLike()" data-value="1" class=" btn btn-primary m-2" :disabled='disableLike'><i class="far fa-thumbs-up"></i></button>
+              <button id="like" @click="updateLike()" data-value="1" class=" btn btn-primary m-2" :disabled='disableLike' aria-label="like"><i class="far fa-thumbs-up"></i></button>
               <p class="mt-3" >{{post.dislike}}</p>
-              <button id="dislike" @click="updateDislike()" class="btn btn-danger m-2" data-value="-1" :disabled='disableDislike'><i class="far fa-thumbs-down"></i></button>
+              <button id="dislike" @click="updateDislike()" class="btn btn-danger m-2" data-value="-1" :disabled='disableDislike' aria-label="dislike"><i class="far fa-thumbs-down"></i></button>
             </div>
         </div>
-                <ul>
+                <div>
                     <div>
-                        <label for="comments">Ecrire votre commentaire :</label>
+                        <label class=" mt-2" for="comments">Ecrire votre commentaire :</label>
                         <textarea v-model="content" id="comments" name="comments" rows='3' class="col" placeholder="Ecrire mon commentaire ...">
                         </textarea>
                         <div class="text-right">
-                            <button @click="createComment()">Envoyer</button>
+                            <button class="btn btn-outline-primary text-primary font-weight-bold m-2" @click="createComment()">Envoyer</button>
                         </div>
                     </div>
-                    <li class="card" v-for="item of allComments" :key="item.id">
-                        <p class="card-title">{{ item.userName }} : posté le {{ item.createdAt.split('T')[0]}} .</p>
-                        <div class="card-body">{{ item.content }}</div>
-                        <div class="d-flex ">
-                            <div class="col">
-                                <button id="buttonModify" @click="toggleModifyComment()" class="text-white btn btn-warning m-2">Modifier</button>
-                                <div id="modifyComment"  style="display:none" >
-                                    <textarea name="modifyComment" id="modify" class="col" rows="10" :placeholder='item.content' v-model="modifyContent">
+                    <div class="border border-primary rounded">
+                    <h3 class="m-4 ">Commentaires</h3>
+                    <div class="card m-2 mt-4 mb-4" v-for="item of allComments" :key="item.id">
+                        <p class="font-italic "><span class="font-weight-bold ">{{ item.userName }} </span>: posté le {{ item.createdAt}}</p>
+                        <div>{{ item.content }}</div>
+                        <div  class="d-flex ">
+                            <div v-if="item.authorization" class="col">
+                                <button @click="toggleModifyComment('modifyComment'+item.id)" class="btn btn-warning m-2">Modifier</button>
+                                <div :id="'modifyComment'+item.id"  style="display:none" >
+                                    <textarea class="col" rows="5" :placeholder='item.content' v-model="modifyContent">
                                         
                                     </textarea>
                                     <div class="d-flex justify-content-end">
                                         <button @click=" modifyComment(item.id)" class="btn btn-warning">Valider la modification</button>
                                     </div>
                                 </div>
-                                <button id="buttonDelete" @click="deleteComment(item.id)" class="text-white btn btn-danger m-2">Supprimer</button>
+                                <button @click="deleteComment(item.id)" class="btn btn-danger m-2">Supprimer</button>
                             </div>
                             
                         </div>
                         <div class="d-flex ">
                         
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                    </div>
+                </div>
             </div>
           </div>  
 </template>
@@ -67,7 +70,9 @@ export default ({
             disableLike : false,
             disableDislike : false,
             modifyContent : "",
-            allComments : []
+            allComments : [],
+            isAdmin : localStorage.getItem('isAdmin'),
+            userId : localStorage.getItem('userId')
 
         }
     },
@@ -96,38 +101,66 @@ export default ({
                 for(const comment of response.body.comment){
                     if(comment.postId == this.id){
                         this.allComments.push(comment)
-                        console.log(this.allComments)
+                        this.isAuthorized()
+                        this.allComments = this.allComments.reverse()                       
+                        
                     }
                 }
+                this.dateSplitCreatedAtComments()
             },
             function(error){
                 console.log(error)
             })
     },
-    computed : {
-          //Changer la date 
-    
-    },
     methods :{
          dateSplitCreatedAt : function(data){
-             console.log(data)
             const useDate = data.split('T')[0]
             const splitDate = useDate.split('-')
             const year = splitDate[0]
             const month = splitDate[1]
             const day = splitDate[2]
-            const date ={ frenchDate : day + '/'+ month +'/' + year}
+            const date = { frenchDate : day + '/'+ month +'/' + year}
             Object.assign(this.post, date)
             
         },
+        dateSplitCreatedAtComments : function(){
+            for (const data of this.allComments){
+                const useDate = data.createdAt.split('T')[0]
+                const splitDate = useDate.split('-')
+                const year = splitDate[0]
+                const month = splitDate[1]
+                const day = splitDate[2]
+                const frenchDate = day + '/'+ month +'/' + year
+        
+                let newDate = {createdAt : frenchDate}
+                Object.assign(data, newDate)
+        }
+        },
+        isAuthorized : function(){
+        for (const data of this.allComments ){
+          if(this.userId == data.userId ){
+            let authorization = {authorization : true}
+            Object.assign(data, authorization)
+            
+          }
+          else if (this.isAdmin == 'true'){
+            let authorization = {authorization : true}
+            Object.assign(data, authorization)
+          }
+          else{
+            let authorization = {authorization : false}
+            Object.assign(data, authorization)
+          }         
+        }
+      },
       
-        toggleModifyComment : function(){
-            const modifyComment = document.getElementById('modifyComment');
-            if (modifyComment.style.display !== 'none') {
-                modifyComment.style.display = 'none';
+        toggleModifyComment : function(button){
+            const buttonModify = document.getElementById(button);
+            if (buttonModify.style.display !== 'none') {
+                buttonModify.style.display = 'none';
             }
             else {
-            modifyComment.style.display = 'block';
+                buttonModify.style.display = 'block';
             }
         },
         createComment : function(){
@@ -275,3 +308,8 @@ export default ({
     }
 })
 </script>
+<style scoped>
+.btn {
+    font-size: 1.2rem;
+}
+</style>
