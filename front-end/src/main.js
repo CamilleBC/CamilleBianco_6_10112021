@@ -2,8 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 //Importer le router pour viex
 import router from './router'
-//Importer le store pour vuex
-import store from './store'
 //Importer bootstrapVue
 import { BootstrapVue } from 'bootstrap-vue'
 import './app.scss'
@@ -21,6 +19,5 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')

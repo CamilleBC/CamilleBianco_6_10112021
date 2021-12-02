@@ -80,24 +80,38 @@ exports.modifyPost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next )=>{
-    models.Post.findOne({where : {id : req.params.id}})
-        .then(function(post){
-            //Récupérer le nom du fichier
-            const filename = post.imageUrl.split('/images/')[1]
-            //Supprimer un fichier et la sauce
-            fs.unlink(`images/${filename}`, () =>{
-                models.Post.destroy({where : {id : req.params.id}})
-                    .then(function(){
-                        res.status(200).json({message : 'Post supprimé !'})
-                    })
-                    .catch(function(error){
-                        res.status(400).json({error})
-                    })
+    models.Comment.destroy({where : {postId : req.params.id}})
+        .then(function(){
+            models.Post_like_by_user.destroy({where : { postId : req.params.id}})
+            .then(function(){
+                models.Post.findOne({where : {id : req.params.id}})
+                    .then(function(post){
+                    //Récupérer le nom du fichier
+                    const filename = post.imageUrl.split('/images/')[1]
+                    //Supprimer un fichier et l'article
+                    fs.unlink(`images/${filename}`, () =>{
+                    models.Post.destroy({where : {id : req.params.id}})
+                        .then(function(){
+                            res.status(200).json({message : 'Post supprimé !'})
+                        })
+                        .catch(function(error){
+                            res.status(400).json({error})
+                        })
+                })
+            })
+        .catch(function(error){
+            res.status(400).json({error})
+        }) 
+
+            })
+            .catch(function(error){
+                res.status(400).json({error})
             })
         })
         .catch(function(error){
             res.status(400).json({error})
-        }) 
+        })
+    
 };
 
 exports.modifyLike = (req, res, next)=>{
