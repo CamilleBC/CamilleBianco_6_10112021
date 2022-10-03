@@ -8,7 +8,7 @@
 ### Fonctionnalités
 
 * Page d'inscription.
-* Page d'athentification.
+* Page d'authentification.
 * Page de profil.
 * Forum où les salariés publient des contenus multimédias sous forme d'article.
 * Forum où les salariés publient des textes sous forme de commentaires à l'intérieur d'un article. 
